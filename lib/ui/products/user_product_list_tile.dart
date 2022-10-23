@@ -2,6 +2,7 @@ import 'package:myshop/ui/products/products_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../../models/product.dart';
+import 'edit_product_screen.dart';
 
 class UserProductListTile extends StatelessWidget {
   const UserProductListTile(
@@ -34,7 +35,10 @@ class UserProductListTile extends StatelessWidget {
       icon: const Icon(Icons.edit),
       color: Theme.of(context).primaryColor,
       onPressed: () {
-        print('Go to edit product screen');
+        Navigator.of(context).pushNamed(
+          EditProductScreen.routeName,
+          arguments: product.id,
+        );
       },
     );
   }
