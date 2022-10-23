@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/product.dart';
 import 'products_detail_screen.dart';
-import '../shared/app_drawer.dart';
 
 class ProductGridTile extends StatelessWidget {
   const ProductGridTile(
