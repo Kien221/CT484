@@ -5,6 +5,7 @@ import 'package:myshop/ui/products/products_grid.dart';
 import 'package:myshop/ui/shared/app_drawer.dart';
 import '../shared/app_drawer.dart';
 import 'top_right_badge.dart';
+import 'package:provider/provider.dart';
 
 enum FilterOptions { favorite, all }
 
@@ -30,13 +31,15 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   }
 
   Widget buildShoppingCartIcon() {
-    return TopRightBadge(
-        data: CartManager().productCount,
-        child: IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.of(context).pushNamed(CartScreen.routeName);
-            }));
+    return Consumer<CartManager>(builder: (ctx, cartManager, child) {
+      return TopRightBadge(
+          data: CartManager().productCount,
+          child: IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              }));
+    });
   }
 
   Widget buildProductFilterMeunu() {

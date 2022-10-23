@@ -68,4 +68,15 @@ class ProductsManager with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void toggleFavorite(Product product) {
+    final savedStatus = product.isFavorite;
+    product.isFavorite = !savedStatus;
+  }
+
+  void deleteProduct(String id) {
+    final index = _items.indexWhere((item) => item.id == id);
+    _items.removeAt(index);
+    notifyListeners();
+  }
 }
