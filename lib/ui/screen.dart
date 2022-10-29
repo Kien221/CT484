@@ -8,3 +8,6 @@ export 'cart/cart_screen.dart';
 export 'cart/cart_manager.dart';
 export 'shared/app_drawer.dart';
 export 'products/edit_product_screen.dart';
+export 'auth/auth_screen.dart';
+export 'auth/auth_manager.dart';
+export 'splash_screen.dart';
