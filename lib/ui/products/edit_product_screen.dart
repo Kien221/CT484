@@ -86,23 +86,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  Future<void> showErrorDialog(BuildContext context, String message) {
-    return showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-          title: const Text('An error occurred'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Okay'),
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-            )
-          ]),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

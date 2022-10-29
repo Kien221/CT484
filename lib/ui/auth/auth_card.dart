@@ -50,7 +50,7 @@ class _AuthCardState extends State<AuthCard> {
             );
       }
     } catch (error) {
-      showConfirmDialog(
+      showErrorDialog(
           context,
           (error is HttpException)
               ? error.toString()

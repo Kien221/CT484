@@ -45,22 +45,22 @@ class Product {
     );
   }
 
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'title': title,
-  //     'description': description,
-  //     'price': price,
-  //     'imageUrl': imageUrl,
-  //   };
-  // }
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+    };
+  }
 
-  // static Product fromJon(Map<String, dynamic> json) {
-  //   return Product(
-  //     id: json['id'],
-  //     title: json['title'],
-  //     description: json['description'],
-  //     price: json['price'],
-  //     imageUrl: json['imageUrl'],
-  //   );
-  // }
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      price: json['price'],
+      imageUrl: json['imageUrl'],
+    );
+  }
 }
