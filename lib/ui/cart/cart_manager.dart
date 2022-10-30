@@ -1,17 +1,17 @@
-import '../../models/cart_item.dart';
 import 'package:flutter/foundation.dart';
-import '../../models/product.dart';
 import '../../models/cart_item.dart';
+import '../../models/product.dart';
 
 class CartManager with ChangeNotifier {
   Map<String, CartItem> _items = {
     'p1': CartItem(
       id: 'c1',
       title: 'Red Shirt',
-      quantity: 2,
       price: 29.99,
+      quantity: 2,
     ),
   };
+
   int get productCount {
     return _items.length;
   }
@@ -36,8 +36,11 @@ class CartManager with ChangeNotifier {
     if (_items.containsKey(product.id)) {
       _items.update(
         product.id!,
-        (existringCartItem) => existringCartItem.copyWith(
-          quantity: existringCartItem.quantity + 1,
+        (existingCartItem) => CartItem(
+          id: existingCartItem.id,
+          title: existingCartItem.title,
+          price: existingCartItem.price,
+          quantity: existingCartItem.quantity + 1,
         ),
       );
     } else {
@@ -66,18 +69,19 @@ class CartManager with ChangeNotifier {
     if (_items[productId]?.quantity as num > 1) {
       _items.update(
         productId,
-        (existringCartItem) => existringCartItem.copyWith(
-          quantity: existringCartItem.quantity - 1,
+        (existingCartItem) => existingCartItem.copyWith(
+          quantity: existingCartItem.quantity - 1,
         ),
       );
     } else {
       _items.remove(productId);
     }
-    notifyListeners();
+    // ignore: unused_element
+    void clear() {
+      _items = {};
+      notifyListeners();
+    }
   }
 
-  void clear() {
-    _items = {};
-    notifyListeners();
-  }
+  void clear() {}
 }

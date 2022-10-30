@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../models/product.dart';
-import '../shared/dailog_utils.dart';
+import '../shared/dialog_utils.dart';
 import 'products_manager.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
-  EditProductScreen(Product? product, {super.key}) {
+  EditProductScreen(
+    Product? product, {
+    super.key,
+  }) {
     if (product == null) {
       this.product = Product(
         id: null,
@@ -20,7 +24,6 @@ class EditProductScreen extends StatefulWidget {
     }
   }
   late final Product product;
-
   @override
   State<EditProductScreen> createState() => _EditProductScreenState();
 }
@@ -32,10 +35,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late Product _editedProduct;
   var _isLoading = false;
   bool _isValidImageUrl(String value) {
-    return (value.startsWith('http') || value.startsWith('https')) &&
-        (value.endsWith('.png') ||
-            value.endsWith('.jpg') ||
-            value.endsWith('.jpeg'));
+    return (value.startsWith('http') ||
+        value.endsWith('.https') ||
+        value.endsWith('.png'));
   }
 
   @override
@@ -45,6 +47,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         if (!_isValidImageUrl(_imageUrlController.text)) {
           return;
         }
+        setState(() {});
       }
     });
     _editedProduct = widget.product;
@@ -65,22 +68,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _editForm.currentState!.save();
+
     setState(() {
       _isLoading = true;
     });
+
     try {
       final productsManager = context.read<ProductsManager>();
       if (_editedProduct.id != null) {
-        productsManager.updateProduct(_editedProduct);
+        await productsManager.updateProduct(_editedProduct);
       } else {
-        productsManager.addProduct(_editedProduct);
+        await productsManager.addProduct(_editedProduct);
       }
     } catch (error) {
-      await showErrorDialog(context, 'Something went wrong');
+      await showErrorDialog(context, 'Something went wrong.');
     }
     setState(() {
       _isLoading = false;
     });
+
     if (mounted) {
       Navigator.of(context).pop();
     }
@@ -89,14 +95,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Product'), actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.save),
-          onPressed: () {
-            _saveForm();
-          },
-        ),
-      ]),
+      appBar: AppBar(
+        title: const Text('Edit Product'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: _saveForm,
+          ),
+        ],
+      ),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -121,17 +128,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildTitleField() {
     return TextFormField(
       initialValue: _editedProduct.title,
-      decoration: const InputDecoration(labelText: 'Title'),
+      decoration: const InputDecoration(
+        labelText: 'Title',
+      ),
       textInputAction: TextInputAction.next,
       autofocus: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please provide a value';
+          return 'Please provide a value.';
         }
         return null;
       },
       onSaved: (value) {
-        _editedProduct = _editedProduct.copyWith(title: value);
+        _editedProduct = _editedProduct.copyWith(title: value!);
       },
     );
   }
@@ -139,18 +148,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildPriceField() {
     return TextFormField(
       initialValue: _editedProduct.price.toString(),
-      decoration: const InputDecoration(labelText: 'Price'),
+      decoration: const InputDecoration(
+        labelText: 'Price',
+      ),
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a price';
+          return 'Please enter a price.';
         }
         if (double.tryParse(value) == null) {
-          return 'Please enter a valid number';
+          return 'Please enter a valid number.';
         }
         if (double.parse(value) <= 0) {
-          return 'Please enter a number greater than zero';
+          return 'Please enter a number greater than zero.';
         }
         return null;
       },
@@ -163,20 +174,22 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextFormField buildDescriptionField() {
     return TextFormField(
       initialValue: _editedProduct.description,
-      decoration: const InputDecoration(labelText: 'Description'),
+      decoration: const InputDecoration(
+        labelText: 'Description',
+      ),
       maxLines: 3,
       keyboardType: TextInputType.multiline,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a description';
+          return 'Please enter a description.';
         }
         if (value.length < 10) {
-          return 'Should be at least 10 characters long';
+          return 'Should be at least 10 characters long.';
         }
         return null;
       },
       onSaved: (value) {
-        _editedProduct = _editedProduct.copyWith(description: value);
+        _editedProduct = _editedProduct.copyWith(description: value!);
       },
     );
   }
@@ -190,22 +203,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
           height: 100,
           margin: const EdgeInsets.only(top: 8, right: 10),
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.grey),
+            border: Border.all(
+              width: 1,
+              color: Colors.grey,
+            ),
           ),
           child: _imageUrlController.text.isEmpty
               ? const Text('Enter a URL')
-              : Image.network(_imageUrlController.text, fit: BoxFit.cover),
+              : FittedBox(
+                  child: Image.network(
+                    _imageUrlController.text,
+                    fit: BoxFit.cover,
+                  ),
+                ),
         ),
         Expanded(
-          child: buildImageUrlField(),
+          child: buildImageURLField(),
         ),
       ],
     );
   }
 
-  TextFormField buildImageUrlField() {
+  TextFormField buildImageURLField() {
     return TextFormField(
-      decoration: const InputDecoration(labelText: 'Image URL'),
+      decoration: const InputDecoration(
+        labelText: 'Image URL',
+      ),
       keyboardType: TextInputType.url,
       textInputAction: TextInputAction.done,
       controller: _imageUrlController,
@@ -213,16 +236,34 @@ class _EditProductScreenState extends State<EditProductScreen> {
       onFieldSubmitted: (value) => _saveForm(),
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter an image URL';
+          return 'Please enter an image URL.';
         }
         if (!_isValidImageUrl(value)) {
-          return 'Please enter a valid image URL';
+          return 'Please enter a valid URL.';
         }
         return null;
       },
       onSaved: (value) {
-        _editedProduct = _editedProduct.copyWith(imageUrl: value);
+        _editedProduct = _editedProduct.copyWith(imageUrl: value!);
       },
+    );
+  }
+
+  Future<void> showErrorDialog(BuildContext context, String message) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('An Error Occurred!'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
     );
   }
 }

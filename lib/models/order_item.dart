@@ -1,4 +1,4 @@
-import 'package:myshop/models/cart_item.dart';
+import 'cart_item.dart';
 
 class OrderItem {
   final String? id;
@@ -16,6 +16,7 @@ class OrderItem {
     required this.products,
     DateTime? dateTime,
   }) : dateTime = dateTime ?? DateTime.now();
+
   OrderItem copyWith({
     String? id,
     double? amount,

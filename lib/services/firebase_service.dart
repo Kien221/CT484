@@ -10,8 +10,9 @@ abstract class FirebaseService {
   FirebaseService([AuthToken? authToken])
       : _token = authToken?.token,
         _userId = authToken?.userId {
-    databaseUrl = dotenv.env['FIREBASE_DATABASE_URL'];
+    databaseUrl = dotenv.env['FIREBASE_URL'];
   }
+
   set authToken(AuthToken? authToken) {
     _token = authToken?.token;
     _userId = authToken?.userId;
@@ -19,6 +20,7 @@ abstract class FirebaseService {
 
   @protected
   String? get token => _token;
+
   @protected
   String? get userId => _userId;
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myshop/ui/orders/order_manager.dart';
-import 'cart_item_card.dart';
-import 'cart_manager.dart';
 import 'package:provider/provider.dart';
+import '../orders/order_manager.dart';
+import 'cart_manager.dart';
+import 'cart_item_card.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
+
   const CartScreen({super.key});
 
   @override
@@ -18,10 +19,10 @@ class CartScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           buildCartSummary(cart, context),
-          const SizedBox(
-            height: 10,
-          ),
-          Expanded(child: buildCartDetails(cart))
+          const SizedBox(height: 10),
+          Expanded(
+            child: buildCartDetails(cart),
+          )
         ],
       ),
     );
@@ -30,10 +31,12 @@ class CartScreen extends StatelessWidget {
   Widget buildCartDetails(CartManager cart) {
     return ListView(
       children: cart.productEntries
-          .map((entry) => CartItemCard(
-                productId: entry.key,
-                cartItem: entry.value,
-              ))
+          .map(
+            (entry) => CartItemCard(
+              productId: entry.key,
+              cardItem: entry.value,
+            ),
+          )
           .toList(),
     );
   }
@@ -44,16 +47,21 @@ class CartScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const Text('Total', style: TextStyle(fontSize: 20)),
+            const Text(
+              'Total',
+              style: TextStyle(fontSize: 20),
+            ),
             const Spacer(),
             Chip(
               label: Text(
                 '\$${cart.totalAmount.toStringAsFixed(2)}',
                 style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.headline6?.color,
-                    backgroundColor: Theme.of(context).primaryColor),
+                  color: Theme.of(context).primaryTextTheme.headline6?.color,
+                ),
               ),
+              backgroundColor: Theme.of(context).primaryColor,
             ),
             TextButton(
               onPressed: cart.totalAmount <= 0
@@ -66,9 +74,8 @@ class CartScreen extends StatelessWidget {
                       cart.clear();
                     },
               style: TextButton.styleFrom(
-                  textStyle: TextStyle(
-                color: Theme.of(context).primaryColor,
-              )),
+                textStyle: TextStyle(color: Theme.of(context).primaryColor),
+              ),
               child: const Text('ORDER NOW'),
             ),
           ],

@@ -10,17 +10,17 @@ class CartItem {
     required this.quantity,
     required this.price,
   });
+
   CartItem copyWith({
     String? id,
     String? title,
-    int? quantity,
     double? price,
+    int? quantity,
   }) {
     return CartItem(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      quantity: quantity ?? this.quantity,
-      price: price ?? this.price,
-    );
+        id: id ?? this.id,
+        title: title ?? this.title,
+        quantity: quantity ?? this.quantity,
+        price: price ?? this.price);
   }
 }

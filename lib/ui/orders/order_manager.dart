@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import '../../models/order_item.dart';
-import '../../models/cart_item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import '../../models/cart_item.dart';
+import '../../models/order_item.dart';
 
 class OrdersManager with ChangeNotifier {
   final List<OrderItem> _orders = [
@@ -14,10 +14,10 @@ class OrdersManager with ChangeNotifier {
           title: 'Red Shirt',
           price: 29.99,
           quantity: 2,
-        )
+        ),
       ],
       dateTime: DateTime.now(),
-    )
+    ),
   ];
   int get orderCount {
     return _orders.length;

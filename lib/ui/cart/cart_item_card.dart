@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:myshop/ui/cart/cart_manager.dart';
-import '../../models/cart_item.dart';
-import '../shared/dailog_utils.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/cart_item.dart';
+import '../shared/dialog_untils.dart';
+import 'cart_manager.dart';
 
 class CartItemCard extends StatelessWidget {
   final String productId;
-  final CartItem cartItem;
-  const CartItemCard(
-      {required this.productId, required this.cartItem, super.key});
+  final CartItem cardItem;
 
+  const CartItemCard({
+    required this.productId,
+    required this.cardItem,
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey(cartItem.id),
+      key: ValueKey(cardItem.id),
       background: Container(
         color: Theme.of(context).errorColor,
         alignment: Alignment.centerRight,
@@ -55,13 +59,13 @@ class CartItemCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(5),
               child: FittedBox(
-                child: Text('\$${cartItem.price}'),
+                child: Text('\$${cardItem.price}'),
               ),
             ),
           ),
-          title: Text(cartItem.title),
-          subtitle: Text('Total: \$${cartItem.price * cartItem.quantity}'),
-          trailing: Text('${cartItem.quantity}x'),
+          title: Text(cardItem.title),
+          subtitle: Text('Total: \$${(cardItem.price * cardItem.quantity)}'),
+          trailing: Text('${cardItem.quantity} x'),
         ),
       ),
     );
